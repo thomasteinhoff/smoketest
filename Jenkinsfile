@@ -14,8 +14,12 @@ pipeline {
         }
         stage('Run Application') {
             steps {
+                // Start the app
                 bat 'start python app.py'
                 sleep(time: 5) // Ensure the app is running before tests
+                
+                // Run an additional Python script
+                bat 'python script.py'
             }
         }
         stage('Run Smoke Tests') {
