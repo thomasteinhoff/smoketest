@@ -1,17 +1,39 @@
 pipeline {
-    agent {
-        docker { image 'python:3.9-slim' }  // Use the Python image
-    }
+    agent any
+
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                bat 'pip install -r requirements.txt'
+            }
+        }
+        stage('Check Python') {
+            steps {
+                bat 'python --version'
+                bat 'pip --version'
             }
         }
         stage('Run Application') {
             steps {
-                sh 'python your_application.py'
+                bat 'python app.py'
             }
+        }
+        stage('Run Smoke Tests') {
+            steps {
+                bat 'pytest test_smoke.py'
+            }
+        } 
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+            bat 'taskkill /F /IM python.exe || exit 0'
         }
     }
 }
