@@ -9,20 +9,12 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                bat """
-                venv\\Scripts\\activate
-                pip install -r requirements.txt
-                """
+                bat 'pip install -r requirements.txt'
             }
         }
         stage('Run Application') {
             steps {
-                // Start the app
-                bat 'start python app.py'
-                sleep(time: 5) // Ensure the app is running before tests
-                
-                // Run an additional Python script
-                bat 'python script.py'
+                bat 'python app.py'
             }
         }
         stage('Run Smoke Tests') {
