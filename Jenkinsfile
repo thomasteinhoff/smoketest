@@ -9,7 +9,10 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                bat 'pip install flask requests pytest'
+                bat """
+                venv\\Scripts\\activate
+                pip install -r requirements.txt
+                """
             }
         }
         stage('Run Application') {
@@ -27,6 +30,12 @@ pipeline {
                 bat 'pytest test_smoke.py'
             }
         }
+        stage('Check Python') {
+            steps {
+                bat 'python --version'
+                bat 'pip --version'
+            }
+        }   
     }
 
     post {
