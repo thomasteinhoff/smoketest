@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Run Application') {
             steps {
-                bat 'nohup python app.py &'
+                bat 'start python app.py'
                 sleep(time: 5) // Ensure the app is running before tests
             }
         }
@@ -28,7 +28,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up...'
-            bat 'pkill -f app.py || true'
+            bat 'taskkill /F /IM python.exe || exit 0'
         }
     }
 }
